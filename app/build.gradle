@@ -1,0 +1,27 @@
+plugins {
+    id 'application'
+    id 'com.github.johnrengelman.shadow' version '7.0.0'
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.7.2'
+    implementation 'org.apache.pdfbox:pdfbox:3.0.0-RC1'
+}
+
+application {
+    mainClass = 'de.moritzf.pdf.reader.PDFReader'
+}
+
+jar {
+    manifest {
+        attributes 'Main-Class': 'de.moritzf.pdf.reader.PDFReader'
+    }
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
