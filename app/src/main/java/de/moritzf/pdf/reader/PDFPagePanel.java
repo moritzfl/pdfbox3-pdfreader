@@ -21,7 +21,6 @@ public final class PDFPagePanel extends JPanel {
     private final PDDocument document;
     private int pageNumber;
     private PDFRenderer drawer;
-    private Dimension pageDimension = null;
     private Dimension drawDimension = null;
 
     /**
@@ -44,11 +43,10 @@ public final class PDFPagePanel extends JPanel {
         drawDimension = new Dimension((int) page.getMediaBox().getWidth(), (int) page.getMediaBox().getHeight());
         int rotation = page.getRotation();
         if (rotation == 90 || rotation == 270) {
-            pageDimension = new Dimension(drawDimension.height, drawDimension.width);
+            setSize(new Dimension(drawDimension.height, drawDimension.width));
         } else {
-            pageDimension = drawDimension;
+            setSize(drawDimension);
         }
-        setSize(drawDimension);
         setBackground(java.awt.Color.white);
     }
 
@@ -57,16 +55,6 @@ public final class PDFPagePanel extends JPanel {
      */
     public void paint(Graphics g) {
         try {
-            g.setColor(getBackground());
-            g.fillRect(0, 0, getWidth(), getHeight());
-
-            int rotation = document.getPage(this.pageNumber).getRotation();
-            if (rotation == 90 || rotation == 270) {
-                Graphics2D g2D = (Graphics2D) g;
-                g2D.translate(pageDimension.getWidth(), 0.0f);
-                g2D.rotate(Math.toRadians(rotation));
-            }
-
             drawer.renderPageToGraphics(pageNumber, (Graphics2D) g);
         } catch (IOException e) {
             e.printStackTrace();
